@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Você está convidado para o Boo-Day do Bento! Domingo, 06/12, às 14h.">
+<meta property="og:title" content="Boo-Day do Bento 👻">
+<meta property="og:description" content="Domingo, 06/12 • 14h • Lago Sul. Venha fantasiado e traga roupa de banho!">
+<style>html,body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+<title>Boo-Day do Bento</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Fredoka:wght@400;500;600&display=swap">
+<style>
+  /* Layout: uma noite roxa em coluna única, pensada para celular — fantasma no topo, cartões de informação, botão de confirmação */
+  :root {
+    --night: #2a1352;
+    --night-2: #4b2296;
+    --violet: #8b4fd8;
+    --lilac: #c9a8f2;
+    --pumpkin: #f26a1b;
+    --moon: #ffe9a8;
+    --star: #ffd66b;
+    --ink: #1b1b1f;
+    --ghost: #ffffff;
+    --card: rgba(255, 255, 255, 0.08);
+    --card-line: rgba(201, 168, 242, 0.28);
+    --text: #f6f0ff;
+    --muted: #cbb8ec;
+    --display: "Luckiest Guy", "Arial Black", Impact, system-ui, sans-serif;
+    --body: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--night); }
+  body {
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(139, 79, 216, 0.55), transparent 60%),
+      linear-gradient(180deg, var(--night) 0%, var(--night-2) 70%, #5b2bb0 100%);
+    background-color: var(--night);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .sky canvas { width: 100%; height: 100%; display: block; }
+  main {
+    position: relative; z-index: 1;
+    max-width: 560px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 56px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+
+  /* HERO */
+  .hero { text-align: center; position: relative; padding-top: 8px; }
+  .moon { position: absolute; top: 0; right: 4px; width: 54px; height: 54px; }
+  .ghost-wrap { position: relative; width: min(56vw, 220px); margin: 0 auto; }
+  .ghost-wrap::before {
+    content: ""; position: absolute; inset: -30% -40%;
+    background: radial-gradient(closest-side, rgba(255,255,255,.28), transparent);
+    z-index: -1;
+  }
+  .ghost { width: 100%; height: auto; display: block; animation: float 4.5s ease-in-out infinite; filter: drop-shadow(0 14px 18px rgba(18, 5, 42, .45)); }
+  @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-10px) } }
+  .bat { position: absolute; width: 46px; height: auto; animation: flap 3.2s ease-in-out infinite; }
+  .bat.b1 { left: -8px; top: 22%; }
+  .bat.b2 { right: -14px; top: 46%; width: 36px; animation-delay: -1.2s; }
+  @keyframes flap { 0%,100% { transform: translateY(0) rotate(-6deg) } 50% { transform: translateY(-8px) rotate(6deg) } }
+
+  .eyebrow { font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; color: var(--lilac); margin: 14px 0 2px; }
+  h1 { margin: 0; line-height: .95; text-wrap: balance; }
+  h1 .boo {
+    display: block; font-family: var(--display); font-weight: 400;
+    font-size: clamp(56px, 17vw, 92px); letter-spacing: .02em;
+    color: var(--pumpkin);
+    -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill;
+    text-shadow: 4px 6px 0 var(--ink);
+  }
+  h1 .do { display: block; font-family: var(--display); font-weight: 400; font-size: clamp(30px, 9vw, 46px); color: var(--ghost); margin-top: 6px; letter-spacing: .03em; }
+  .age {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+    background: var(--violet); color: #fff; border-radius: 999px; padding: 6px 16px 6px 8px;
+    font-weight: 600; box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset;
+  }
+  .age b { font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1; background: #fff; color: var(--violet); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; padding-top: 3px; }
+  .lede { margin: 16px auto 0; max-width: 34ch; color: var(--text); font-size: 18px; text-wrap: balance; }
+
+  /* CONTAGEM */
+  .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .count { background: var(--card); border: 1px solid var(--card-line); border-radius: 14px; padding: 10px 4px 8px; text-align: center; }
+  .count span { display: block; font-family: var(--display); font-size: clamp(26px, 8vw, 36px); line-height: 1.1; color: var(--star); font-variant-numeric: tabular-nums; }
+  .count small { display: block; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .count-done { text-align: center; font-family: var(--display); font-size: 26px; color: var(--star); }
+
+  /* INFO */
+  .info { display: flex; flex-direction: column; gap: 12px; }
+  .row { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: var(--card); border: 1px solid var(--card-line); border-radius: 18px; padding: 16px; }
+  .row > div { min-width: 0; }
+  .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.1); }
+  .ico svg { width: 26px; height: 26px; }
+  .label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .value { font-size: 19px; font-weight: 600; line-height: 1.3; margin-top: 2px; }
+  .value.big { font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: .02em; }
+  .sub { color: var(--muted); font-size: 15px; margin-top: 2px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chip {
+    appearance: none; border: 1px solid var(--card-line); background: rgba(255,255,255,.06); color: var(--text);
+    font: 500 14px/1 var(--body); padding: 9px 13px; border-radius: 999px; text-decoration: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .chip:hover { background: rgba(255,255,255,.14); }
+  .chip:focus-visible, .rsvp:focus-visible { outline: 3px solid var(--star); outline-offset: 3px; }
+
+  /* AVISOS */
+  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .note { border-radius: 18px; padding: 16px 14px; text-align: center; border: 2px dashed var(--card-line); }
+  .note .emoji { font-size: 30px; line-height: 1; }
+  .note h3 { margin: 8px 0 2px; font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: .03em; color: var(--ghost); }
+  .note p { margin: 0; color: var(--muted); font-size: 15px; }
+  @media (max-width: 360px) { .notes { grid-template-columns: 1fr; } }
+
+  /* RSVP */
+  .rsvp-box { text-align: center; background: var(--ghost); color: var(--ink); border-radius: 26px; padding: 22px 18px 20px; position: relative; overflow: hidden; }
+  .rsvp-box h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 30px; letter-spacing: .02em; color: var(--violet); }
+  .rsvp-box p { margin: 6px auto 16px; max-width: 30ch; color: #4a3a66; }
+  .rsvp {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    background: var(--pumpkin); color: #fff; font-family: var(--display); font-size: 22px; letter-spacing: .04em;
+    padding: 14px 26px 12px; border-radius: 999px; box-shadow: 0 5px 0 #b44a0c;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .rsvp:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #b44a0c; }
+  .rsvp:active { transform: translateY(3px); box-shadow: 0 2px 0 #b44a0c; }
+  .web { position: absolute; width: 90px; opacity: .14; }
+  .web.w1 { top: -14px; left: -14px; }
+  .web.w2 { bottom: -18px; right: -18px; transform: rotate(180deg); }
+
+  footer { text-align: center; color: var(--muted); font-size: 14px; }
+  footer .pump { width: 34px; vertical-align: middle; }
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ghost); color: var(--ink); padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 14px; box-shadow: 0 6px 20px rgba(0,0,0,.3); z-index: 5; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ghost, .bat { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="sky" aria-hidden="true"><canvas id="sky"></canvas></div>
+
+<main>
+  <header class="hero">
+    <svg class="moon" viewBox="0 0 60 60" aria-hidden="true"><path d="M44 50A26 26 0 1 1 30 4a22 22 0 0 0 14 46z" fill="var(--moon)"/></svg>
+    <div class="ghost-wrap">
+      <svg class="ghost" viewBox="-18 -2 166 182" role="img" aria-label="Fantasminha sorrindo">
+        <path d="M0,65.0 A65.0,65.0 0 0 1 130,65.0 L130,92 C145,93 147,110 130,113 L130,160 A16.25,16.25 0 0 1 97.5,160 A16.25,16.25 0 0 1 65.0,160 A16.25,16.25 0 0 1 32.5,160 A16.25,16.25 0 0 1 0.0,160 L0,113 C-17,110 -15,93 0,92 Z" fill="#fff" stroke="#1b1b1f" stroke-width="3" stroke-linejoin="round"/>
+        <ellipse cx="52" cy="48" rx="6" ry="8" fill="#1b1b1f"/><circle cx="54" cy="45" r="2.3" fill="#fff"/>
+        <ellipse cx="78" cy="48" rx="6" ry="8" fill="#1b1b1f"/><circle cx="80" cy="45" r="2.3" fill="#fff"/>
+        <ellipse cx="38" cy="62" rx="8" ry="4.6" fill="#f7a8b8"/><ellipse cx="92" cy="62" rx="8" ry="4.6" fill="#f7a8b8"/>
+        <path d="M57,60 Q65,69 73,60" fill="none" stroke="#1b1b1f" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <svg class="bat b1" viewBox="-16 -7 32 15" aria-hidden="true"><path d="M-15,-3 C-10,-6 -5,-5 -3,-2 L-2.2,-5.5 L-1,-3 L1,-3 L2.2,-5.5 L3,-2 C5,-5 10,-6 15,-3 C13,0 13,3 14,5 C11,3 9,4 8,6 C6,4 4,4 3,5 C2,7.5 -2,7.5 -3,5 C-4,4 -6,4 -8,6 C-9,4 -11,3 -14,5 C-13,3 -13,0 -15,-3 Z" fill="#1b1b1f"/><circle cx="-1.1" cy="-0.6" r=".7" fill="#fff"/><circle cx="1.1" cy="-0.6" r=".7" fill="#fff"/></svg>
+      <svg class="bat b2" viewBox="-16 -7 32 15" aria-hidden="true"><path d="M-15,-3 C-10,-6 -5,-5 -3,-2 L-2.2,-5.5 L-1,-3 L1,-3 L2.2,-5.5 L3,-2 C5,-5 10,-6 15,-3 C13,0 13,3 14,5 C11,3 9,4 8,6 C6,4 4,4 3,5 C2,7.5 -2,7.5 -3,5 C-4,4 -6,4 -8,6 C-9,4 -11,3 -14,5 C-13,3 -13,0 -15,-3 Z" fill="#1b1b1f"/><circle cx="-1.1" cy="-0.6" r=".7" fill="#fff"/><circle cx="1.1" cy="-0.6" r=".7" fill="#fff"/></svg>
+    </div>
+    <p class="eyebrow">Você está convidado para o</p>
+    <h1><span class="boo">BOO-DAY</span><span class="do">DO BENTO</span></h1>
+    <div class="age"><b>4</b> aninhos de muita diversão</div>
+    <p class="lede">Vem comemorar comigo com fantasias, guloseimas assombradas e muita piscina!</p>
+  </header>
+
+  <section aria-label="Contagem regressiva">
+    <div class="countdown" id="countdown">
+      <div class="count"><span id="cd-d">--</span><small>dias</small></div>
+      <div class="count"><span id="cd-h">--</span><small>horas</small></div>
+      <div class="count"><span id="cd-m">--</span><small>min</small></div>
+      <div class="count"><span id="cd-s">--</span><small>seg</small></div>
+    </div>
+    <p class="count-done" id="count-done" hidden>É hoje! 👻</p>
+  </section>
+
+  <section class="info" aria-label="Detalhes da festa">
+    <div class="row">
+      <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--star)" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+      <div>
+        <div class="label">Quando</div>
+        <div class="value big">Domingo, 06/12 • 14h</div>
+        <div class="actions">
+          <a class="chip" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Boo-Day%20do%20Bento%20%F0%9F%91%BB&amp;dates=20261206T170000Z/20261206T210000Z&amp;location=QL%2024%2C%20Conjunto%204%2C%20Casa%2014%20-%20Lago%20Sul%2C%20Bras%C3%ADlia%20-%20DF&amp;details=Anivers%C3%A1rio%20de%204%20anos%20do%20Bento.%20Venha%20fantasiado%20e%20traga%20roupa%20de%20banho!" target="_blank" rel="noopener">＋ Adicionar à agenda</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--star)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+      <div>
+        <div class="label">Onde</div>
+        <div class="value" id="addr">QL 24, Conjunto 4, Casa 14</div>
+        <div class="sub">Lago Sul • Brasília</div>
+        <div class="actions">
+          <a class="chip" href="https://maps.app.goo.gl/ka1iahieyNsPofo38" target="_blank" rel="noopener">Abrir no mapa</a>
+          <button class="chip" type="button" id="copy">Copiar endereço</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes" aria-label="Avisos">
+    <div class="note"><div class="emoji" aria-hidden="true">🎃</div><h3>Venha fantasiado</h3><p>Vale fantasia de tudo, assustadora ou fofinha.</p></div>
+    <div class="note"><div class="emoji" aria-hidden="true">🩱</div><h3>Roupa de banho</h3><p>Tem piscina! Traga roupa de banho e toalha.</p></div>
+  </section>
+
+  <section class="rsvp-box" aria-label="Confirmação de presença">
+    <svg class="web w1" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#2a1352" stroke-width="1.6"><path d="M0 0L100 100M0 0L100 40M0 0L40 100M0 0L100 0M0 0L0 100"/><path d="M30 0Q22 22 0 30M60 0Q45 45 0 60M90 0Q66 66 0 90"/></g></svg>
+    <svg class="web w2" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#2a1352" stroke-width="1.6"><path d="M0 0L100 100M0 0L100 40M0 0L40 100M0 0L100 0M0 0L0 100"/><path d="M30 0Q22 22 0 30M60 0Q45 45 0 60M90 0Q66 66 0 90"/></g></svg>
+    <h2>Confirme sua presença</h2>
+    <p>Leva menos de um minuto e ajuda a gente a preparar tudo com carinho.</p>
+    <a class="rsvp" href="https://docs.google.com/forms/d/e/1FAIpQLSf_MUK8npDIEVo_fLnNsTQJrhnxqUDKfafqMGsBXOeEahEYKg/viewform" target="_blank" rel="noopener">Confirmar 👻</a>
+  </section>
+
+  <footer>
+    <svg class="pump" viewBox="-8 -8 16 14" aria-hidden="true"><ellipse rx="6" ry="5" fill="#f26a1b"/><path d="M-2,-4.5 Q0,0 -2,4.6 M2,-4.5 Q0,0 2,4.6" stroke="#d2560f" stroke-width=".5" fill="none"/><rect x="-.7" y="-7" width="1.4" height="2.6" rx=".5" fill="#3d8b3d"/><path d="M-3.4,-.2 l1.5,-2.2 l1.5,2.2z M.4,-.2 l1.5,-2.2 l1.5,2.2z" fill="#1b1b1f"/><path d="M-3.2,1.2 Q0,4.4 3.2,1.2 Q0,2.4 -3.2,1.2z" fill="#1b1b1f"/></svg>
+    Te espero no meu Boo-Day!
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+  // Contagem regressiva até 06/12/2026 14h (Brasília, UTC-3)
+  const party = new Date("2026-12-06T14:00:00-03:00").getTime();
+  const pad = n => String(n).padStart(2, "0");
+  function tick() {
+    const diff = party - Date.now();
+    if (diff <= 0) {
+      document.getElementById("countdown").hidden = true;
+      document.getElementById("count-done").hidden = false;
+      return;
+    }
+    const s = Math.floor(diff / 1000);
+    document.getElementById("cd-d").textContent = Math.floor(s / 86400);
+    document.getElementById("cd-h").textContent = pad(Math.floor(s % 86400 / 3600));
+    document.getElementById("cd-m").textContent = pad(Math.floor(s % 3600 / 60));
+    document.getElementById("cd-s").textContent = pad(s % 60);
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Copiar endereço
+  const toast = document.getElementById("toast");
+  function showToast(msg) { toast.textContent = msg; toast.hidden = false; clearTimeout(showToast.t); showToast.t = setTimeout(() => toast.hidden = true, 2200); }
+  document.getElementById("copy").addEventListener("click", () => {
+    const text = "QL 24, Conjunto 4, Casa 14 – Lago Sul, Brasília - DF";
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents(document.getElementById("addr"));
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      showToast("Endereço selecionado: é só copiar");
+    };
+    try {
+      navigator.clipboard.writeText(text).then(() => showToast("Endereço copiado"), fallback);
+    } catch (e) { fallback(); }
+  });
+
+  // Céu estrelado
+  const c = document.getElementById("sky"), ctx = c.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let stars = [];
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(innerWidth * innerHeight / 5500);
+    stars = Array.from({ length: n }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight, r: Math.random() * 1.4 + .3, p: Math.random() * 6.28, gold: Math.random() < .12 }));
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const s of stars) {
+      const a = reduce ? .7 : .45 + .45 * Math.sin(t / 900 + s.p);
+      ctx.globalAlpha = a; ctx.fillStyle = s.gold ? "#ffd66b" : "#ffffff";
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  addEventListener("resize", () => { resize(); if (reduce) draw(0); });
+  resize(); requestAnimationFrame(draw);
+</script>
+
+</body>
+</html>
